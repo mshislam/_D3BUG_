@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/MahmouddAhmed/_D3BUG_#readme",
   "dependencies": {
+    "@google-cloud/translate": "^5.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jwt-passport": "0.0.5",
