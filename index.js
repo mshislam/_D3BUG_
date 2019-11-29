@@ -9,19 +9,40 @@ const db = require("./config/keys").mongoURI;
 
 mongoose.Promise = global.Promise;
 
-mongoose
-  .connect(db, { useNewUrlParser: true })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch(err => console.log(err));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+
+
+  mongoose
+  
+      .connect(db)
+  
+      .then(() => console.log('Connected to MongoDB'))
+  
+      .catch(err => console.log(err))
+  
+  
+  
+  app.use(express.json())
+  
+  app.use(express.urlencoded({extended: false}))
+  
+  app.use(cors())
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
 const users = require("./routes/api/users");
 app.use("/api/users", users);
+
+
+app.get('/', (req, res) => {
+
+  res.send(`<h1>Hello </h1>`
+
+  );
+
+})
+
+
 
 // Handling 404
 app.use((req, res) => {
