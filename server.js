@@ -30,7 +30,7 @@ app.use((req, res) => {
   res.status(404).send({ err: "We can not find what you are looking for" });
 });
 
-const port = process.env.PORT || 3000;
+const port = require("./config.json").port;
 app.listen(port, (req, res) => {
   console.log(`Server up and running on port ${port}`);
 });
