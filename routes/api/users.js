@@ -174,6 +174,12 @@ router.get(
     return res.json({ data: result });
   }
 );
+router.get("/finduser/:id", async (req, res) => {
+  const X = await User.findOne({ _id: req.params.id });
+
+  res.json({ data: X });
+});
+
 function shuffle(a) {
   var j, x, i;
   for (i = a.length - 1; i > 0; i--) {
@@ -184,4 +190,6 @@ function shuffle(a) {
   }
   return a;
 }
+//5de13d1b7a07e63914601a1c
+
 module.exports = router;
