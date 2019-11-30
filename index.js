@@ -3,46 +3,31 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const cors = require("cors");
 const app = express();
-const path = require("path");
-
-const db = require("./config/keys").mongoURI;
-
+const db = require("./config.json").db.mongoURI;
+console.log(db);
 mongoose.Promise = global.Promise;
 
+mongoose
+  .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.log(err));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 
 
-  mongoose
-  
-      .connect(db)
-  
-      .then(() => console.log('Connected to MongoDB'))
-  
-      .catch(err => console.log(err))
-  
-  
-  
-  app.use(express.json())
-  
-  app.use(express.urlencoded({extended: false}))
-  
-  app.use(cors())
 app.use(passport.initialize());
-require("./config/passport")(passport);
+//require("./routes/api/passport.js")(passport);
 
 const users = require("./routes/api/users");
+require("./routes/api/translate.js");
 app.use("/api/users", users);
 
 
-app.get('/', (req, res) => {
-
-  res.send(`<h1>Hello </h1>`
-
-  );
-
-})
-
-
+const translate = require("./routes/api/translate");
+app.use("/api/translate", translate);
 
 // Handling 404
 app.use((req, res) => {

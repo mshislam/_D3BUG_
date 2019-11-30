@@ -1,12 +1,42 @@
 const express = require("express");
-
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const router = express.Router();
 
-const passport = require('passport')
-const User = require('../../models/User');
+const User = require("../../models/User");
+const passport = require("passport");
 
-const bcrypt = require('bcryptjs');
+router.post(
+  "/removecategory",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    await User.updateOne(
+      { _id: req.user._id },
+      { $pull: { Categories: req.body.Category } }
+    );
+    return res.json({ msg: "done" });
+  }
+);
+
+
+
+router.post(
+  "/removeword",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const Wid = req.body.Wid;
+    await User.updateOne(
+      { _id: req.user._id },
+      { $pull: { Vocabulary: { _id: Wid } } }
+    );
+
+    return res.json({ msg: "done" });
+  }
+);
+
+
+
+
 
 router.post('/register',passport.authenticate("jwt",{session: false }), async (req, res) => {
 
@@ -118,8 +148,9 @@ router.get('/finduser/:id', async (req, res) => {
 	res.json({ data: X })
 
 })
-module.exports = router;
+
 
 //5de13d1b7a07e63914601a1c
+
 
 module.exports = router;
