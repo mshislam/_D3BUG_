@@ -3,14 +3,11 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const cors = require("cors");
 const app = express();
-const path = require("path");
-
-const db = require("./config/keys").mongoURI;
-
+const db = require("./config.json").db.mongoURI;
+console.log(db);
 mongoose.Promise = global.Promise;
-
 mongoose
-  .connect(db, { useNewUrlParser: true })
+  .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.log(err));
 
@@ -18,9 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(passport.initialize());
-require("./config/passport")(passport);
+require("./routes/api/passport.js")(passport);
 
 const users = require("./routes/api/users");
+require("./routes/api/translate.js");
 app.use("/api/users", users);
 
 // Handling 404
