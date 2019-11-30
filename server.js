@@ -4,7 +4,6 @@ const passport = require("passport");
 const cors = require("cors");
 const app = express();
 const db = require("./config.json").db.mongoURI;
-console.log(db);
 mongoose.Promise = global.Promise;
 mongoose
   .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
