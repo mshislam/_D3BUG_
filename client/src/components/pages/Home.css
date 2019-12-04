@@ -1,4 +1,6 @@
 .loader {
+  margin-left: auto;
+  margin-right: auto;
   border: 16px solid #f3f3f3;
   border-top: 16px solid #3498db;
   border-radius: 50%;
@@ -14,4 +16,22 @@
   100% {
     transform: rotate(360deg);
   }
+}
+.rw-widget-container {
+  max-width: 200px;
+  max-height: 10px;
+}
+.rw-popup-container {
+  max-width: 210px;
+  margin-left: 52%;
+}
+.rw-list {
+  font-family: "Times New Roman", Times, serif;
+}
+.combo {
+  padding-left: 52%;
+}
+.TA1,
+.TA2 {
+  resize: none;
 }

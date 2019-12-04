@@ -9,9 +9,10 @@ class Home extends Component {
       Word: "",
       Translation: "",
       target: "en",
-      supportedlanguages: []
+      supportedlanguages: null
     };
     this.onChangeWord = this.onChangeWord.bind(this);
+    this.onSelecttarget = this.onSelecttarget.bind(this);
   }
 
   async onChangeWord(e) {
@@ -22,9 +23,17 @@ class Home extends Component {
         target: this.state.target
       })
       .then(res => {
-        console.log(res);
         this.setState({ Translation: res.data.translation });
       });
+  }
+  async onSelecttarget(value) {
+    await this.setState({ target: value.code });
+    this.onChangeWord({
+      target: {
+        name: "Word",
+        value: this.state.Word
+      }
+    });
   }
   componentDidMount() {
     axios
@@ -39,24 +48,37 @@ class Home extends Component {
 
   render() {
     if (this.state.supportedlanguages == null)
-      return <div className="loader center"></div>;
+      return <div className="loader"></div>;
     return (
       <div>
-        <label>Word</label>
-        <p></p>
-        <textarea name="Word" rows="3" onChange={this.onChangeWord}></textarea>
+        <Combobox
+          className="combo"
+          filter
+          autoFocus
+          data={this.state.supportedlanguages}
+          valueField="name"
+          textField="name"
+          defaultValue={"English"}
+          onSelect={this.onSelecttarget}
+        />
         <textarea
+          className="TA1"
+          name="Word"
+          rows="10"
+          cols="50"
+          onChange={this.onChangeWord}
+        ></textarea>
+        <span className="span1"> </span>
+
+        <textarea
+          className="TA2"
           name="Translation"
           readOnly
-          rows="3"
+          rows="10"
+          cols="50"
           value={this.state.Translation}
         ></textarea>
         <p></p>
-        <Combobox
-          data={this.state.supportedlanguages}
-          valueField="code"
-          textField="name"
-        />
       </div>
     );
   }
