@@ -3,9 +3,10 @@ import "./Home.css";
 import axios from "axios";
 import Combobox from "react-widgets/lib/Combobox";
 import Modal from "react-modal";
+import Vocabulary from "../layout/Vocabulary";
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       Word: "",
       Translation: "",
@@ -15,7 +16,33 @@ class Home extends Component {
       modalIsOpen: false,
       newcategoryname: "",
       currentcategory: "Add new Category",
-      Categories: ["a", "b", "c", "d"]
+      Categories: ["a", "b", "c", "d"],
+      Vocabulary: [
+        {
+          _id: "5de003c975ba5f3048459a36",
+          Word: "Velocity2",
+          Translation: "2السرعة",
+          From: "English",
+          To: "Arabic",
+          Category: "Physics"
+        },
+        {
+          _id: "5de003cd75ba5f3048459a37",
+          Word: "Velocity1",
+          Translation: "1السرعة",
+          From: "English",
+          To: "Arabic",
+          Category: "Physics"
+        },
+        {
+          _id: "5de003d175ba5f3048459a38",
+          Word: "Velocity3",
+          Translation: "3السرعة",
+          From: "English",
+          To: "Arabic",
+          Category: "Physics"
+        }
+      ]
     };
     this.onChangeWord = this.onChangeWord.bind(this);
     this.onSelecttarget = this.onSelecttarget.bind(this);
@@ -25,6 +52,8 @@ class Home extends Component {
     this.addword = this.addword.bind(this);
     this.deletecategory = this.deletecategory.bind(this);
     this.onSelectCategory = this.onSelectCategory.bind(this);
+    this.deleteword = this.deleteword.bind(this);
+    this.editword = this.editword.bind(this);
   }
 
   openModal() {
@@ -45,6 +74,13 @@ class Home extends Component {
   }
   addword() {
     console.log("addword");
+  }
+  deleteword(word) {
+    console.log(word);
+  }
+  editword(newtranslation, selectedword) {
+    console.log(newtranslation);
+    console.log(selectedword);
   }
   async onChangeWord(e) {
     await this.setState({ [e.target.name]: e.target.value });
@@ -75,7 +111,7 @@ class Home extends Component {
   }
   async onSelectCategory(value) {
     if (value === "Add new Category") {
-      this.openModal();
+      await this.openModal();
     } else {
       await this.setState({ currentcategory: value });
     }
@@ -164,6 +200,14 @@ class Home extends Component {
           defaultValue={this.state.currentcategory}
           onSelect={this.onSelectCategory}
         />
+        {console.log(this.state.Vocabulary)}
+        <div>
+          <Vocabulary
+            V={this.state.Vocabulary}
+            editword={this.editword}
+            deleteword={this.deleteword}
+          />
+        </div>
       </div>
     );
   }
