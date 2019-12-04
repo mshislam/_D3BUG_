@@ -4,7 +4,10 @@
   "description": "Translator and vocabulary",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -18,16 +21,34 @@
   "homepage": "https://github.com/MahmouddAhmed/_D3BUG_#readme",
   "dependencies": {
     "@google-cloud/translate": "^5.1.0",
+    "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
+    "concurrently": "^5.0.0",
     "config": "^3.2.4",
+    "connect": "^3.7.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "google-translate": "^3.0.0",
+    "history": "^4.10.1",
+    "html-react-parser": "^0.10.0",
+    "jquery": "^3.4.1",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^2.2.0",
     "jwt-passport": "0.0.5",
+    "link": "^0.1.5",
     "mongoose": "^5.7.12",
     "nodemon": "^2.0.1",
     "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.1.3",
+    "react-router-dom": "^5.1.2",
+    "react-widgets": "^4.4.11",
+    "redux": "^4.0.4",
+    "redux-storage": "^4.1.2",
+    "redux-thunk": "^2.3.0",
+    "tachyons": "^4.11.1"
   }
 }
