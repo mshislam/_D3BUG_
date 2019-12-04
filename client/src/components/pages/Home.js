@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Home.css";
 import axios from "axios";
 import Combobox from "react-widgets/lib/Combobox";
+import Modal from "react-modal";
 class Home extends Component {
   constructor() {
     super();
@@ -9,12 +10,42 @@ class Home extends Component {
       Word: "",
       Translation: "",
       target: "en",
-      supportedlanguages: null
+      source: "",
+      supportedlanguages: null,
+      modalIsOpen: false,
+      newcategoryname: "",
+      currentcategory: "Add new Category",
+      Categories: ["a", "b", "c", "d"]
     };
     this.onChangeWord = this.onChangeWord.bind(this);
     this.onSelecttarget = this.onSelecttarget.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.addcategory = this.addcategory.bind(this);
+    this.addword = this.addword.bind(this);
+    this.deletecategory = this.deletecategory.bind(this);
+    this.onSelectCategory = this.onSelectCategory.bind(this);
   }
 
+  openModal() {
+    this.setState({ modalIsOpen: true });
+  }
+  closeModal() {
+    this.setState({ newcategoryname: "" });
+    this.setState({ modalIsOpen: false });
+  }
+  async addcategory(e) {
+    e.preventDefault();
+    await this.setState({ currentcategory: this.state.newcategoryname });
+    this.state.Categories.push(this.state.currentcategory);
+    await this.closeModal();
+  }
+  deletecategory() {
+    console.log("deleteCategory");
+  }
+  addword() {
+    console.log("addword");
+  }
   async onChangeWord(e) {
     await this.setState({ [e.target.name]: e.target.value });
     axios
@@ -24,6 +55,13 @@ class Home extends Component {
       })
       .then(res => {
         this.setState({ Translation: res.data.translation });
+      });
+    axios
+      .post(`http://localhost:3001/api/translate/detectLanguage`, {
+        text: this.state.Word
+      })
+      .then(res => {
+        this.setState({ source: res.data.detections[0].language });
       });
   }
   async onSelecttarget(value) {
@@ -35,6 +73,13 @@ class Home extends Component {
       }
     });
   }
+  async onSelectCategory(value) {
+    if (value === "Add new Category") {
+      this.openModal();
+    } else {
+      await this.setState({ currentcategory: value });
+    }
+  }
   componentDidMount() {
     axios
       .get(`http://localhost:3001/api/translate/listLanguages`, {
@@ -44,6 +89,7 @@ class Home extends Component {
       .then(res => {
         this.setState({ supportedlanguages: res.data.Languages });
       });
+    this.state.Categories.unshift("Add new Category");
   }
 
   render() {
@@ -52,7 +98,7 @@ class Home extends Component {
     return (
       <div>
         <Combobox
-          className="combo"
+          className="combo1"
           filter
           autoFocus
           data={this.state.supportedlanguages}
@@ -79,6 +125,45 @@ class Home extends Component {
           value={this.state.Translation}
         ></textarea>
         <p></p>
+        <button onClick={this.deletecategory}>Delete Category</button>
+        <Modal
+          ariaHideApp={false}
+          shouldCloseOnOverlayClick={false}
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          className="Modal"
+          overlayClassName="Overlay"
+          contentLabel="Adding new Category"
+        >
+          <form onSubmit={this.addcategory}>
+            <h2 className="modaltittle">Category Name:</h2>
+            <input
+              className="newcategoryName"
+              type="text"
+              required={true}
+              onChange={e => {
+                this.setState({ newcategoryname: e.target.value });
+              }}
+            />
+            <p></p>
+
+            <button className="modaladdbutton">Add</button>
+
+            <button className="modalclosebutton" onClick={this.closeModal}>
+              cancel
+            </button>
+          </form>
+        </Modal>
+        <p></p>
+        <button onClick={this.addword}>Add Word</button>
+        <Combobox
+          className="combo2"
+          filter
+          autoFocus
+          data={this.state.Categories}
+          defaultValue={this.state.currentcategory}
+          onSelect={this.onSelectCategory}
+        />
       </div>
     );
   }
