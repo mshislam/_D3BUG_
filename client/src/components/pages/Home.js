@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import "./Home.css";
+import { connect } from "react-redux";
 import axios from "axios";
 import Combobox from "react-widgets/lib/Combobox";
 import Modal from "react-modal";
 import Vocabulary from "../layout/Vocabulary";
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -13,36 +15,11 @@ class Home extends Component {
       target: "en",
       source: "",
       supportedlanguages: null,
+      Categories: null,
       modalIsOpen: false,
       newcategoryname: "",
-      currentcategory: "Add new Category",
-      Categories: ["a", "b", "c", "d"],
-      Vocabulary: [
-        {
-          _id: "5de003c975ba5f3048459a36",
-          Word: "Velocity2",
-          Translation: "2السرعة",
-          From: "English",
-          To: "Arabic",
-          Category: "Physics"
-        },
-        {
-          _id: "5de003cd75ba5f3048459a37",
-          Word: "Velocity1",
-          Translation: "1السرعة",
-          From: "English",
-          To: "Arabic",
-          Category: "Physics"
-        },
-        {
-          _id: "5de003d175ba5f3048459a38",
-          Word: "Velocity3",
-          Translation: "3السرعة",
-          From: "English",
-          To: "Arabic",
-          Category: "Physics"
-        }
-      ]
+      currentcategory: "",
+      Vocabulary: []
     };
     this.onChangeWord = this.onChangeWord.bind(this);
     this.onSelecttarget = this.onSelecttarget.bind(this);
@@ -63,25 +40,70 @@ class Home extends Component {
     this.setState({ newcategoryname: "" });
     this.setState({ modalIsOpen: false });
   }
-  async addcategory(e) {
-    e.preventDefault();
-    await this.setState({ currentcategory: this.state.newcategoryname });
-    this.state.Categories.push(this.state.currentcategory);
-    await this.closeModal();
+  async deleteword(word) {
+    await axios.post(`http://localhost:3001/api/users/removeword`, {
+      Wid: word._id
+    });
+    await axios
+      .post(`http://localhost:3001/api/users/Words`, {
+        Category: this.state.currentcategory
+      })
+      .then(res => {
+        this.setState({ Vocabulary: res.data.data });
+      });
+  }
+  async editword(newtranslation, Word) {
+    await axios.put(`http://localhost:3001/api/users/updateword`, {
+      Wid: Word._id,
+      Category: this.state.currentcategory,
+      Translation: newtranslation
+    });
+    await axios
+      .post(`http://localhost:3001/api/users/Words`, {
+        Category: this.state.currentcategory
+      })
+      .then(res => {
+        this.setState({ Vocabulary: res.data.data });
+      });
+  }
+
+  async addword() {
+    if (
+      this.state.currentcategory == "" ||
+      this.state.currentcategory == "New Category"
+    )
+      return;
+    axios.post(`http://localhost:3001/api/users/addword`, {
+      Word: this.state.Word,
+      Translation: this.state.Translation,
+      From: this.state.source,
+      To: this.state.target,
+      Category: this.state.currentcategory
+    });
+
+    var joined = this.state.Vocabulary.concat({
+      Word: this.state.Word,
+      Translation: this.state.Translation,
+      From: this.state.source,
+      To: this.state.target,
+      Category: this.state.currentcategory
+    });
+    this.setState({ Vocabulary: joined });
   }
   deletecategory() {
-    console.log("deleteCategory");
+    axios
+      .post(`http://localhost:3001/api/users/removecategory`, {
+        Category: this.state.currentcategory
+      })
+      .then(res => {
+        this.setState({ Vocabulary: [], currentcategory: "" });
+        this.state.Categories.splice(
+          this.state.Categories.indexOf(this.state.currentcategory),
+          1
+        );
+      });
   }
-  addword() {
-    console.log("addword");
-  }
-  deleteword(word) {
-    console.log(word);
-  }
-  editword(newtranslation, selectedword) {
-    console.log(newtranslation);
-    console.log(selectedword);
-  }
+
   async onChangeWord(e) {
     await this.setState({ [e.target.name]: e.target.value });
     axios
@@ -109,11 +131,30 @@ class Home extends Component {
       }
     });
   }
+  async addcategory(e) {
+    e.preventDefault();
+
+    var joined = this.state.Categories.concat(this.state.newcategoryname);
+    await this.setState({ Categories: joined });
+    await this.setState({ currentcategory: this.state.newcategoryname });
+    await axios.post(`http://localhost:3001/api/users/addcategory`, {
+      Category: this.state.currentcategory
+    });
+    await this.setState({ Vocabulary: [] });
+    await this.closeModal();
+  }
   async onSelectCategory(value) {
-    if (value === "Add new Category") {
+    if (value === "New Category") {
       await this.openModal();
     } else {
       await this.setState({ currentcategory: value });
+      axios
+        .post(`http://localhost:3001/api/users/Words`, {
+          Category: this.state.currentcategory
+        })
+        .then(res => {
+          this.setState({ Vocabulary: res.data.data });
+        });
     }
   }
   componentDidMount() {
@@ -125,43 +166,81 @@ class Home extends Component {
       .then(res => {
         this.setState({ supportedlanguages: res.data.Languages });
       });
-    this.state.Categories.unshift("Add new Category");
+    axios.get(`http://localhost:3001/api/users/usercategories`, {}).then(
+      res => {
+        this.setState({ Categories: res.data.data });
+        this.state.Categories.unshift("New Category");
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
   render() {
-    if (this.state.supportedlanguages == null)
+    if (this.state.supportedlanguages == null || this.state.Categories == null)
       return <div className="loader"></div>;
     return (
       <div>
-        <Combobox
-          className="combo1"
-          filter
-          autoFocus
-          data={this.state.supportedlanguages}
-          valueField="name"
-          textField="name"
-          defaultValue={"English"}
-          onSelect={this.onSelecttarget}
-        />
-        <textarea
-          className="TA1"
-          name="Word"
-          rows="10"
-          cols="50"
-          onChange={this.onChangeWord}
-        ></textarea>
-        <span className="span1"> </span>
+        <div className="test">
+          <Combobox
+            className="combo1"
+            filter
+            autoFocus
+            data={this.state.supportedlanguages}
+            valueField="name"
+            textField="name"
+            defaultValue={"English"}
+            onSelect={this.onSelecttarget}
+          />
 
-        <textarea
-          className="TA2"
-          name="Translation"
-          readOnly
-          rows="10"
-          cols="50"
-          value={this.state.Translation}
-        ></textarea>
+          <textarea
+            className="TA1"
+            name="Word"
+            rows="10"
+            cols="50"
+            onChange={this.onChangeWord}
+          ></textarea>
+          <span className="span1"> </span>
+
+          <textarea
+            className="TA2"
+            name="Translation"
+            readOnly
+            rows="10"
+            cols="50"
+            value={this.state.Translation}
+          ></textarea>
+        </div>
         <p></p>
-        <button onClick={this.deletecategory}>Delete Category</button>
+        <div className="test">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={this.addword}
+          >
+            Add Word To
+          </button>
+
+          <Combobox
+            className="combo2"
+            filter
+            autoFocus
+            data={this.state.Categories}
+            value={this.state.currentcategory}
+            onSelect={this.onSelectCategory}
+          />
+        </div>
+        <p></p>
+        <div className="test2">
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={this.deletecategory}
+          >
+            Delete Category
+          </button>
+        </div>
         <Modal
           ariaHideApp={false}
           shouldCloseOnOverlayClick={false}
@@ -191,16 +270,7 @@ class Home extends Component {
           </form>
         </Modal>
         <p></p>
-        <button onClick={this.addword}>Add Word</button>
-        <Combobox
-          className="combo2"
-          filter
-          autoFocus
-          data={this.state.Categories}
-          defaultValue={this.state.currentcategory}
-          onSelect={this.onSelectCategory}
-        />
-        {console.log(this.state.Vocabulary)}
+
         <div>
           <Vocabulary
             V={this.state.Vocabulary}
@@ -212,5 +282,12 @@ class Home extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  console.log(state.authentication.loggedUser);
 
-export default Home;
+  const { isLoggedIn, loggedUser } = state.authentication;
+  const { users } = state.users;
+  return { isLoggedIn, loggedUser, users };
+}
+
+export default connect(mapStateToProps)(Home);

@@ -125,7 +125,7 @@ router.put(
     return res.json({ msg: "done" });
   }
 );
-router.get(
+router.post(
   "/Words",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
