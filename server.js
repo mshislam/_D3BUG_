@@ -18,10 +18,8 @@ app.use(passport.initialize());
 require("./routes/api/passport.js")(passport);
 
 const users = require("./routes/api/users");
-require("./routes/api/translate.js");
-app.use("/api/users", users);
-
 const translate = require("./routes/api/translate");
+app.use("/api/users", users);
 app.use("/api/translate", translate);
 
 // Handling 404
