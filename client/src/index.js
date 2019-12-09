@@ -15,12 +15,8 @@ import store from "./ConfigureStore";
 
 import { Provider } from "react-redux";
 
-import { Link,Route, BrowserRouter  ,browserHistory,Switch } from 'react-router-dom'
 
 
-function componentApp(props){
-    return <App/>
-}
 
 
 

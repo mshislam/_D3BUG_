@@ -7,7 +7,7 @@ import { Route, BrowserRouter as Router,Switch } from 'react-router-dom'
 import Profile from './components/pages/Profile'
 
 
-import Home from "./components/pages/Home"
+import HomePage from "./components/pages/Home"
 import setAuthorizationToken from './utils.js/setAuthorizationToken';
 import SignUp from './components/pages/SignUp';
 
@@ -33,7 +33,7 @@ class App extends React.Component {
   
   
   render(){
-    console.log(this.props.isLoggedIn==false)
+    console.log(this.props.isLoggedIn===false)
       setAuthorizationToken()
    
         return(

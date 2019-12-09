@@ -2,7 +2,6 @@ import axios from 'axios';
 import setAuthorizationToken from '../utils.js/setAuthorizationToken';
 import jwtDecode from 'jwt-decode';
 import { LOGOUT, LOGIN } from './types.js';
-import { LOAD } from 'redux-storage';
 
 
 export function setCurrentUser(user) {
@@ -62,10 +61,7 @@ export function login(data) {
 
     return axios.post('http://localhost:3001/api/users/login', data).then(res => {
 
-
-
       const token = res.data.data;
-
      
       localStorage.setItem('jwtToken', token);
 
@@ -75,10 +71,7 @@ export function login(data) {
 
 
       dispatch(setCurrentUser(jwtDecode(token)));
-
-
-
-    }) .catch(function (err) {
+    }).catch(function (err) {
 
       alert(err.response.data.error)
 

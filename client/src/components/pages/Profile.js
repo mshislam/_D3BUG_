@@ -1,15 +1,10 @@
 import React, { Component } from 'react'
-import { Link,Route, BrowserRouter as Router ,Switch } from 'react-router-dom'
 import { connect } from "react-redux";
 
-import PropTypes from 'prop-types'
+
 import axios from 'axios'
   class Profile extends Component {
-    constructor(props) {
 
-      super(props);
-  
-    }
 state={
   id:"",
   Email:"" ,
@@ -51,8 +46,8 @@ componentDidMount() {
   }
 
   render() {
-    const {isLoggedIn,loggedUser,users} = this.props;
-    const x = this.props.loggedUser
+  
+
   
     return(
       <div id="page-content-wrapper">
