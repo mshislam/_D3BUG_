@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
 import "tachyons";
 
 import { login } from "../../actions/authactions";
 
-import { connect } from "react-redux";
+
 import "./Form.css";
 class SignIn extends Component {
   constructor(props) {
@@ -36,19 +36,26 @@ class SignIn extends Component {
     console.log(e.target.value);
   }
 
-  handleClick(e) {
-    const { dispatch } = this.props;
-  }
+  
 
-  render() {
-    const { identifier, password } = this.state;
+  render() {  
 
-    const { isLoggedIn, loggedUser, users } = this.props;
 
-    if (isLoggedIn) {
-      return (
-        <div>
-          <h3>{console.log(loggedUser)}</h3>
+
+    const {isLoggedIn,loggedUser} = this.props;
+
+    if(isLoggedIn) {
+
+      return (<div>
+
+      <h3>{console.log(loggedUser)}</h3>
+
+
+     
+
+     
+
+  
 
           <h4>{this.props.history.push("/home")}</h4>
 
@@ -150,6 +157,3 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(SignIn);
 
-{
-  /* <NavLink to="/contact">Contact</NavLink> */
-}

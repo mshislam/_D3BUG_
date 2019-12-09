@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "./Home.css";
-import { connect } from "react-redux";
 import axios from "axios";
 import Combobox from "react-widgets/lib/Combobox";
 import Modal from "react-modal";
 import Vocabulary from "../layout/Vocabulary";
+import { connect } from "react-redux";
 
 class Home extends Component {
   constructor(props) {
@@ -103,7 +103,6 @@ class Home extends Component {
         );
       });
   }
-
   async onChangeWord(e) {
     await this.setState({ [e.target.name]: e.target.value });
     axios
