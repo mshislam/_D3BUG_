@@ -4,14 +4,14 @@ const projectId = require("../../config.json").cloudTranslation.Key;
 const { Translate } = require("@google-cloud/translate").v2;
 const translate = new Translate({ key: projectId });
 
-router.get("/quicktranslate", async (req, res) => {
+router.post("/quicktranslate", async (req, res) => {
   const text = req.body.text;
   const target = req.body.target;
   const [translation] = await translate.translate(text, target);
   return res.json({ translation: translation });
 });
 
-router.get("/detectLanguage", async (req, res) => {
+router.post("/detectLanguage", async (req, res) => {
   const text = req.body.text;
   let [detections] = await translate.detect(text);
   detections = Array.isArray(detections) ? detections : [detections];
