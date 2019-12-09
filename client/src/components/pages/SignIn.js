@@ -1,24 +1,19 @@
-import Parser from "html-react-parser";
 
 import React, { Component } from "react";
 
-import PropTypes from "prop-types";
+
 
 import "tachyons";
 
 import { login } from "../../actions/authactions";
 
-import { Link,Route, BrowserRouter as Router ,Switch } from 'react-router-dom'
+
 
 import { connect } from "react-redux";
 
-import axios from 'axios'
 
-import {getuserbyid} from '../../actions/useractions'
 
-import {createHashHistory}from "history"
 
-import Profile from "../pages/Profile"
 class SignIn extends Component {
 
   constructor(props) {
@@ -61,7 +56,7 @@ class SignIn extends Component {
 
   handleClick(e){
 
-    const { dispatch } = this.props;
+  
 
    
 
@@ -69,9 +64,9 @@ class SignIn extends Component {
 
   render() {  
 
-    const { identifier, password } = this.state;
 
-    const {isLoggedIn,loggedUser,users} = this.props;
+
+    const {isLoggedIn,loggedUser} = this.props;
 
     if(isLoggedIn) {
 
@@ -84,7 +79,7 @@ class SignIn extends Component {
 
      
 
-      <h5></h5>
+  
 
       </div>
 
@@ -241,4 +236,3 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(SignIn);
 
-{/* <NavLink to="/contact">Contact</NavLink> */}
