@@ -4,7 +4,6 @@ const passport = require("passport");
 const cors = require("cors");
 const app = express();
 const db = require("./config.json").db.mongoURI;
-console.log(db);
 mongoose.Promise = global.Promise;
 mongoose
   .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
@@ -19,10 +18,8 @@ app.use(passport.initialize());
 require("./routes/api/passport.js")(passport);
 
 const users = require("./routes/api/users");
-require("./routes/api/translate.js");
-app.use("/api/users", users);
-
 const translate = require("./routes/api/translate");
+app.use("/api/users", users);
 app.use("/api/translate", translate);
 
 // Handling 404

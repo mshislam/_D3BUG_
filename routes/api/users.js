@@ -9,9 +9,7 @@ const passport = require("passport");
 router.post("/login", async (req, res) => {
   try {
     const { Email, Password } = req.body;
-    console.log(Email);
     const user = await User.findOne({ Email: Email });
-    console.log(Email);
     if (!user) {
       return res.status(404).json({ error: "Email does not exist" });
     }
@@ -127,7 +125,7 @@ router.put(
     return res.json({ msg: "done" });
   }
 );
-router.get(
+router.post(
   "/Words",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
@@ -174,11 +172,22 @@ router.get(
     return res.json({ data: result });
   }
 );
-router.get("/finduser/:id", async (req, res) => {
-  const X = await User.findOne({ _id: req.params.id });
-
-  res.json({ data: X });
-});
+router.get(
+  "/usercategories/",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    res.json({ data: req.user.Categories });
+  }
+);
+router.get(
+  "/finduser/",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const X = req.user;
+    X.Hashed_password = null;
+    res.json({ data: X });
+  }
+);
 
 function shuffle(a) {
   var j, x, i;
@@ -190,6 +199,5 @@ function shuffle(a) {
   }
   return a;
 }
-//5de13d1b7a07e63914601a1c
 
 module.exports = router;
