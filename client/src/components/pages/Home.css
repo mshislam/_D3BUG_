@@ -1,93 +1,121 @@
 .loader {
-    margin-left: auto;
-    margin-right: auto;
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #3498db;
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+  margin-left: auto;
+  margin-right: auto;
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
   }
-  .rw-widget-container {
-    max-width: 200px;
-    max-height: 10px;
-  }
-  .rw-popup-container {
-    max-width: 210px;
-    margin-left: 52%;
-  }
-  .rw-list {
-    font-family: "Times New Roman", Times, serif;
-  }
-  .combo1 {
-    padding-left: 52%;
-  }
-  .TA1,
-  .TA2 {
-    resize: none;
-  }
-  .Modal {
-    outline: none;
-    position: absolute;
-    top: 37%;
-    bottom: 37%;
-    left: 37%;
-    right: 37%;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.884);
-  }
-  
-  .Overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(43, 40, 40, 0.85);
-  }
-  .modaltittle {
-    text-align: center;
-    color: #f3f3f3;
-  }
-  .newcategoryName {
-    text-align: center;
-    width: 80%;
-    padding: 12px 20px;
-    margin-left: 10%;
-    box-sizing: border-box;
-    border-radius: 10px;
-    outline: none;
-  }
-  .modaladdbutton {
-    text-align: center;
-    outline: none;
-    background: #8cda26;
-    border: none;
-    border-radius: 5px;
-    width: 75px;
-    height: 45px;
-    display: inline-block;
-    margin-left: 29%;
-  }
-  .modalclosebutton {
-    text-align: center;
-    outline: none;
-    -webkit-appearance: none;
-    background: #da2632;
-    border: none;
-    border-radius: 5px;
-    width: 75px;
-    height: 45px;
-    display: inline-block;
-    margin-left: 2%;
-  }
-  
+}
+.rw-list {
+  font-family: "Times New Roman", Times, serif;
+}
+.rw-widget-container {
+  /*el combo box nafso*/
+  max-width: 200px;
+  max-height: 10px;
+}
+.combo1 .rw-popup-container {
+  /*mkan el list we el width bta3o*/
+  max-width: 210px;
+  margin-left: 38.7%;
+}
+.combo2 .rw-popup-container {
+  /*mkan el list we el width bta3o*/
+  max-width: 210px;
+  margin-left: 0%;
+}
+
+.combo1 {
+  padding-left: 38.7%;
+}
+.combo2 {
+  display: inline;
+  margin-left: 1%;
+}
+.TA1,
+.TA2 {
+  resize: none;
+  display: inline-block;
+  margin-left: 1%;
+  margin-top: 1%;
+  border-radius: 10px;
+  outline: none;
+}
+.Modal {
+  outline: none;
+  position: absolute;
+  top: 37%;
+  bottom: 37%;
+  left: 37%;
+  right: 37%;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.884);
+}
+
+.Overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(43, 40, 40, 0.85);
+}
+.modaltittle {
+  text-align: center;
+  color: #f3f3f3;
+}
+.newcategoryName {
+  text-align: center;
+  width: 80%;
+  padding: 12px 20px;
+  margin-left: 10%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: none;
+}
+.modaladdbutton {
+  text-align: center;
+  outline: none;
+  background: #8cda26;
+  border: none;
+  border-radius: 5px;
+  width: 75px;
+  height: 45px;
+  display: inline-block;
+  margin-left: 29%;
+}
+.modalclosebutton {
+  text-align: center;
+  outline: none;
+  -webkit-appearance: none;
+  background: #da2632;
+  border: none;
+  border-radius: 5px;
+  width: 75px;
+  height: 45px;
+  display: inline-block;
+  margin-left: 2%;
+}
+.test {
+  display: inline;
+  margin-left: 1%;
+}
+.combo2 {
+  display: inline;
+  margin-left: 1%;
+}
+.test2 {
+  display: inline;
+  margin-left: 1%;
+}

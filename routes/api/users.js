@@ -125,7 +125,7 @@ router.put(
     return res.json({ msg: "done" });
   }
 );
-router.get(
+router.post(
   "/Words",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
@@ -170,6 +170,13 @@ router.get(
       return res.status(400).send({ error: "Not enough words to take quiz" });
     }
     return res.json({ data: result });
+  }
+);
+router.get(
+  "/usercategories/",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    res.json({ data: req.user.Categories });
   }
 );
 router.get(
